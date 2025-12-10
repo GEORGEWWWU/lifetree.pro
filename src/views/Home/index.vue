@@ -2,6 +2,7 @@
     <div class="home_page">
         <main>
             <section>
+                <!--大标题-->
                 <div class="container leadtitle">
                     <h2>音乐来自宇宙时空的深处</h2>
                     <p class="leadtext">
@@ -11,13 +12,17 @@
             </section>
 
             <section>
-                <div class="container musiclist"></div>
+                <!--音乐列表组件-->
+                <MusicListVue />
             </section>
         </main>
     </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import MusicListVue from '@/components/MusicList.vue';
+
+</script>
 
 <style scoped lang="less">
 @import url('../../static/home.less');
