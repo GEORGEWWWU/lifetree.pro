@@ -274,6 +274,12 @@ defineExpose({
             border-radius: 2px;
             cursor: pointer;
             position: relative;
+            transition: all 0.12s ease-in-out;
+
+            &:hover {
+                height: 5px;
+                border-radius: 4px;
+            }
 
             .progress-bar {
                 height: 100%;
