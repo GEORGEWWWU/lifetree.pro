@@ -2,8 +2,106 @@
     width: 100vw;
     display: grid;
     justify-items: center;
-    padding-top: 65px;
+    padding-top: 55px;
     animation: pagefadein 0.3s ease-in-out;
+
+    // 内容区域
+    main {
+        width: 100vw;
+        display: grid;
+        justify-items: center;
+        gap: 20px;
+        padding-bottom: 100px;
+
+        section {
+            width: 100vw;
+            display: grid;
+            justify-items: center;
+            padding: 13px 0;
+
+            .container {
+                max-width: 1000px;
+                margin: 0 auto;
+            }
+
+            // 首页主标题
+            .leadtitle {
+                min-height: 130px;
+                display: grid;
+                justify-items: left;
+                align-content: flex-end;
+                gap: 15px;
+
+                h2 {
+                    font-size: 30px;
+                }
+
+                .leadtext {
+                    font-size: 17px;
+                    line-height: 1.7;
+                    color: #374151;
+                }
+            }
+
+            // 媒体区域
+            .media-section {
+                width: 100%;
+                display: grid;
+
+                // 视频容器
+                .video-container {
+                    width: 100%;
+                    display: flex;
+                    justify-content: center;
+
+                    video {
+                        width: 100%;
+                        height: auto;
+                        border-radius: 8px;
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                    }
+                }
+
+                // 图片画廊
+                .image-gallery {
+                    display: grid;
+                    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+                    gap: 20px;
+
+                    .image-item {
+                        overflow: hidden;
+                        border-radius: 8px;
+                        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+                        transition: transform 0.3s ease;
+
+                        img {
+                            width: 100%;
+                            height: 100%;
+                            object-fit: cover;
+                            display: block;
+                            transition: transform 0.3s ease;
+                        }
+
+                        &:hover {
+                            transform: translateY(-5px);
+
+                            img {
+                                transform: scale(1.05);
+                            }
+                        }
+                    }
+                }
+            }
+
+            // 底部区域
+            .footer-section {
+                text-align: center;
+                padding: 20px 0;
+                color: #6b7280;
+                font-size: 14px;
+            }
+        }
+    }
 
     @keyframes pagefadein {
         from {
@@ -12,7 +110,6 @@
 
         to {
             opacity: 1;
-
         }
     }
 }
