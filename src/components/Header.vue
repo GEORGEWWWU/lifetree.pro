@@ -9,7 +9,7 @@
                 </div>
             </div>
             <div class="nav">
-                <router-link to="/">主页</router-link>
+                <router-link to="/" @click="scrollToTop">主页</router-link>
                 <a href="#music" @click="handleMusicClick">曲目</a>
                 <router-link to="/media">视频与画廊</router-link>
                 <button>登录</button>
@@ -23,6 +23,12 @@ import { useRoute, useRouter } from 'vue-router';
 const route = useRoute();
 const router = useRouter();
 
+// 滚动到顶部
+function scrollToTop() {
+    window.scrollTo(0, 0);
+}
+
+// 处理曲目链接点击
 function handleMusicClick(e: MouseEvent) {
     if (route.path !== '/') {
         e.preventDefault();
@@ -37,6 +43,11 @@ function handleMusicClick(e: MouseEvent) {
     height: 65px;
     display: grid;
     justify-items: center;
+    position: fixed;
+    top: 0;
+    background: #f9f9f9e3;
+    z-index: 99;
+    backdrop-filter: blur(10px);
 
     header {
         width: 1000px;

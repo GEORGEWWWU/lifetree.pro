@@ -1,6 +1,13 @@
 <template>
     <div class="footer_container">
-        <h1>底部信息组件</h1>
+        <footer>
+            <p>&copy; 2025 生命树. All rights reserved.</p>
+            <div class="footer_btn">
+                <a href="#">蜀ICP备</a>
+                <span>|</span>
+                <a href="mailto:69927088@qq.com">联系我们</a>
+            </div>
+        </footer>
     </div>
 </template>
 
@@ -15,5 +22,38 @@
     border-radius: 8px;
     display: grid;
     justify-items: center;
+
+    footer {
+        width: 97%;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    p {
+        font-size: 13px;
+        color: #888;
+    }
+
+    .footer_btn {
+        display: flex;
+        justify-content: right;
+        align-items: center;
+        gap: 14px;
+
+        a {
+            font-size: 14px;
+            color: #888;
+            transition: all 0.12s ease-in-out;
+
+            &:hover {
+                color: #555;
+            }
+        }
+
+        span {
+            font-size: 13px;
+            color: #ccccccc5;
+        }
+    }
 }
 </style>
