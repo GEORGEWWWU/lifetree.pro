@@ -1,5 +1,6 @@
 <template>
     <div class="home_page">
+        <!--内容区域-->
         <main>
             <section>
                 <!--大标题-->
@@ -11,17 +12,29 @@
                 </div>
             </section>
 
-            <section>
+            <section id="music">
                 <!--音乐列表组件-->
                 <MusicListVue />
             </section>
+
+            <section>
+                <!--底部信息-->
+                <FooterVue />
+            </section>
         </main>
+
+        <!--播放器组件-->
+        <div class="player">
+            <PlayerVue />
+        </div>
     </div>
 </template>
 
 <script setup lang="ts">
 import MusicListVue from '@/components/MusicList.vue';
-
+// @ts-ignore: allow importing .vue SFC without a specific type declaration
+import PlayerVue from '@/components/Player.vue';
+import FooterVue from '@/components/Footer.vue';
 </script>
 
 <style scoped lang="less">
