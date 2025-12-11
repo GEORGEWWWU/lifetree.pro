@@ -31,8 +31,8 @@
                             <div class="moreaction" v-show="activeMoreId === song.id" @click.stop>
                                 <p @click="onDownload(song, 'original')">下载原曲</p>
                                 <p @click="onDownload(song, 'pdf')">下载曲谱</p>
-                                <p @click="onDownload(song, 'krc')">下载伴奏</p>
-                                <p @click="onSelectFormat(song)">选择格式</p>
+                                <!-- <p @click="onDownload(song, 'krc')">下载伴奏</p>
+                                <p @click="onSelectFormat(song)">选择格式</p> -->
                             </div>
                         </div>
                     </td>
@@ -70,16 +70,43 @@ onMounted(() => document.addEventListener('click', onDocClick));
 onBeforeUnmount(() => document.removeEventListener('click', onDocClick));
 
 // 下载歌曲或相关文件
-function onDownload(song: Song, mode: string) {
-    // 占位：实现下载逻辑
-    console.log('download', song, mode);
-    activeMoreId.value = null;
-}
+async function onDownload(song: Song, mode: string) {
+    try {
+        if (mode === 'original') {
+            // 下载原曲
+            const link = document.createElement('a');
+            link.href = song.url;
+            link.download = `${song.title}.${song.type}`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } else if (mode === 'pdf') {
+            // 下载曲谱 - 曲谱与歌曲同名，后缀为.pdf
+            // 使用Vite的import.meta.glob获取PDF文件
+            const pdfLoaders = import.meta.glob('../assets/*.pdf', { as: 'url' }) as Record<string, () => Promise<string>>;
 
-// 选择格式
-function onSelectFormat(song: Song) {
-    // 占位：实现选择格式逻辑
-    console.log('select format', song);
+            // 查找与歌曲同名的PDF文件
+            const pdfPath = `../assets/${song.title}.pdf`;
+            const pdfLoader = pdfLoaders[pdfPath];
+
+            if (pdfLoader) {
+                const pdfUrl = await pdfLoader();
+                const link = document.createElement('a');
+                link.href = pdfUrl;
+                link.download = `${song.title}.pdf`;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            } else {
+                console.warn(`找不到曲谱文件: ${pdfPath}`);
+                // 可以在这里添加用户提示
+            }
+        }
+    } catch (error) {
+        console.error('下载失败:', error);
+        // 可以在这里添加错误提示
+    }
+
     activeMoreId.value = null;
 }
 

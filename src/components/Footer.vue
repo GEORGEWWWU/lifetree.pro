@@ -3,7 +3,7 @@
         <footer>
             <p>&copy; 2025 生命树. All rights reserved.</p>
             <div class="footer_btn">
-                <a href="#">蜀ICP备 - 备案中</a>
+                <a href="https://beian.miit.gov.cn/" target="_blank">蜀ICP备 - 备案中</a>
                 <span>|</span>
                 <a href="mailto:69927088@qq.com">联系我们</a>
             </div>
