@@ -16,7 +16,7 @@
         <!--视频展示区域-->
         <div class="container media-section">
           <div class="video-container">
-            <video v-lazy="videoUrl" controls>
+            <video src="../../assets/video_20251211_1.mp4" controls>
               <source type="video/mp4">
               您的浏览器不支持视频播放。
             </video>
@@ -29,25 +29,25 @@
         <div class="container media-section">
           <div class="image-gallery">
             <div class="image-item">
-              <img v-lazy="imageUrl[0]" alt="精彩瞬间1">
+              <img src="/src/assets/1.jpg" alt="精彩瞬间1">
             </div>
             <div class="image-item">
-              <img v-lazy="imageUrl[1]" alt="精彩瞬间2">
+              <img src="/src/assets/2.jpg" alt="精彩瞬间2">
             </div>
             <div class="image-item">
-              <img v-lazy="imageUrl[2]" alt="精彩瞬间3">
+              <img src="/src/assets/3.jpg" alt="精彩瞬间3">
             </div>
             <div class="image-item">
-              <img v-lazy="imageUrl[3]" alt="精彩瞬间4">
+              <img src="/src/assets/4.jpg" alt="精彩瞬间4">
             </div>
             <div class="image-item">
-              <img v-lazy="imageUrl[4]" alt="精彩瞬间5">
+              <img src="/src/assets/5.jpg" alt="精彩瞬间5">
             </div>
             <div class="image-item">
-              <img v-lazy="imageUrl[5]" alt="精彩瞬间6">
+              <img src="/src/assets/6.jpg" alt="精彩瞬间6">
             </div>
             <div class="image-item">
-              <img v-lazy="imageUrl[6]" alt="精彩瞬间7">
+              <img src="/src/assets/7.jpg" alt="精彩瞬间7">
             </div>
           </div>
         </div>
@@ -64,16 +64,6 @@
 </template>
 
 <script setup lang="ts">
-const videoUrl = '/src/assets/video_20251211_1.mp4'
-const imageUrl = [
-  '/src/assets/1.jpg',
-  '/src/assets/2.jpg',
-  '/src/assets/3.jpg',
-  '/src/assets/4.jpg',
-  '/src/assets/5.jpg',
-  '/src/assets/6.jpg',
-  '/src/assets/7.jpg',
-]
 </script>
 
 <style scoped lang="less">
