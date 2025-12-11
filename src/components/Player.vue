@@ -40,7 +40,7 @@
                         <input v-show="showVolume" type="range" min="0" max="100" :value="volume * 100"
                             @input="onVolumeChange" @click.stop @mousemove="resetAutoHide" @mousedown="resetAutoHide" />
                     </div>
-                    <button>
+                    <button @click="shareCurrentSong">
                         <p>链接分享</p>
                         <img src="../assets/分享.png" alt="分享">
                     </button>
@@ -51,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted, onBeforeUnmount, nextTick } from 'vue';
+import { ref, watch, onMounted, onBeforeUnmount, nextTick, getCurrentInstance } from 'vue';
 import { usePlayer } from '../stores/player';
 import pauseIcon from '../assets/播放中.png';
 import playIcon from '../assets/暂停中.png';
@@ -73,6 +73,10 @@ const {
     updateDuration,
     setVolume
 } = usePlayer();
+
+// 获取全局通知实例
+const instance = getCurrentInstance();
+const notification = instance?.appContext.config.globalProperties.$notification;
 
 // 音频元素引用
 const audioRef = ref<HTMLAudioElement | null>(null);
@@ -196,6 +200,19 @@ function downloadCurrentSong() {
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
+
+    // 显示下载成功消息
+    if (notification) {
+        notification.show('下载成功');
+    }
+}
+
+// 分享当前歌曲
+function shareCurrentSong() {
+    // 显示分享功能开发中消息
+    if (notification) {
+        notification.show('分享功能开发中！');
+    }
 }
 
 // 点击文档其他地方时关闭音量控制

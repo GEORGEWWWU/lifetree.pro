@@ -12,6 +12,7 @@
                 <router-link to="/" @click="scrollToTop">主页</router-link>
                 <a href="#music" @click="handleMusicClick">曲目</a>
                 <router-link to="/media">视频与画廊</router-link>
+                <!-- <button @click="testNotification">测试通知</button> -->
                 <button>登录</button>
             </div>
         </header>
@@ -20,8 +21,13 @@
 
 <script setup lang="ts">
 import { useRoute, useRouter } from 'vue-router';
+// import { getCurrentInstance } from 'vue';
 const route = useRoute();
 const router = useRouter();
+
+// 获取全局通知实例
+// const instance = getCurrentInstance();
+// const notification = instance?.appContext.config.globalProperties.$notification;
 
 // 滚动到顶部
 function scrollToTop() {
@@ -35,6 +41,13 @@ function handleMusicClick(e: MouseEvent) {
         router.push('/#music');
     }
 }
+
+// 测试消息弹窗
+// function testNotification() {
+//     if (notification) {
+//         notification.show('这是一条测试消息，展示了iOS灵动岛风格的通知效果');
+//     }
+// }
 </script>
 
 <style scoped lang="less">
