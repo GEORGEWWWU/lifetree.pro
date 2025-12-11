@@ -1,26 +1,34 @@
 <template>
     <div class="player_container">
         <div class="player">
-            <div class="process"></div>
+            <!-- 进度条 -->
+            <div class="process" @click="seekTo">
+                <div class="progress-bar" :style="{ width: progressPercentage + '%' }"></div>
+            </div>
+
+            <!-- 音频元素 -->
+            <audio ref="audioRef" :src="currentSong?.url" @timeupdate="onTimeUpdate" @loadedmetadata="onLoadedMetadata"
+                @ended="onEnded"></audio>
+
             <div class="controls">
                 <div class="name_time">
-                    <p>未在播放</p>
+                    <p>{{ currentSong?.title || '未在播放' }}</p>
                     <span>|</span>
-                    <p>00:00 / 00:00</p>
+                    <p>{{ formattedCurrentTime }} / {{ formattedDuration }}</p>
                 </div>
                 <div class="music_control">
-                    <button>
+                    <button @click="playPrevious">
                         <img src="../assets/上一首.png" alt="上一首">
                     </button>
-                    <button class="play_pause">
-                        <img src="../assets/暂停中.png" alt="暂停中">
+                    <button class="play_pause" @click="togglePlay">
+                        <img :src="isPlaying ? pauseIcon : playIcon" :alt="isPlaying ? '暂停中' : '播放中'">
                     </button>
-                    <button>
+                    <button @click="playNext">
                         <img src="../assets/下一首.png" alt="下一首">
                     </button>
                 </div>
                 <div class="orther_control">
-                    <button>
+                    <button @click="downloadCurrentSong" :disabled="!currentSong">
                         <p>下载原曲</p>
                         <img src="../assets/下载.png" alt="下载">
                     </button>
@@ -29,8 +37,8 @@
                             <p>音量调整</p>
                             <img src="../assets/音量.png" alt="音量">
                         </button>
-                        <input v-show="showVolume" type="range" min="0" max="100" @click.stop @mousemove="resetAutoHide"
-                            @mousedown="resetAutoHide" />
+                        <input v-show="showVolume" type="range" min="0" max="100" :value="volume * 100"
+                            @input="onVolumeChange" @click.stop @mousemove="resetAutoHide" @mousedown="resetAutoHide" />
                     </div>
                     <button>
                         <p>链接分享</p>
@@ -43,12 +51,105 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, watch, onMounted, onBeforeUnmount, nextTick } from 'vue';
+import { usePlayer } from '../stores/player';
+import pauseIcon from '../assets/播放中.png';
+import playIcon from '../assets/暂停中.png';
+
+// 使用播放器状态管理
+const {
+    currentSong,
+    isPlaying,
+    currentTime,
+    duration,
+    volume,
+    formattedCurrentTime,
+    formattedDuration,
+    progressPercentage,
+    togglePlay,
+    playNext,
+    playPrevious,
+    updateTime,
+    updateDuration,
+    setVolume
+} = usePlayer();
+
+// 音频元素引用
+const audioRef = ref<HTMLAudioElement | null>(null);
 
 // 音量控制
 const showVolume = ref(false);
 const volumeRef = ref<HTMLElement | null>(null);
 let autoHideTimer: number | null = null;
+
+// 监听播放状态变化
+watch(isPlaying, (newVal) => {
+    if (audioRef.value) {
+        if (newVal) {
+            audioRef.value.play();
+        } else {
+            audioRef.value.pause();
+        }
+    }
+});
+
+// 监听当前歌曲变化
+watch(currentSong, () => {
+    if (audioRef.value) {
+        nextTick(() => {
+            if (isPlaying.value) {
+                audioRef.value?.play();
+            }
+        });
+    }
+});
+
+// 监听音量变化
+watch(volume, (newVal) => {
+    if (audioRef.value) {
+        audioRef.value.volume = newVal;
+    }
+});
+
+// 音频事件处理
+function onTimeUpdate() {
+    if (audioRef.value) {
+        updateTime(audioRef.value.currentTime);
+    }
+}
+
+// 音频元数据加载完成
+function onLoadedMetadata() {
+    if (audioRef.value) {
+        updateDuration(audioRef.value.duration);
+    }
+}
+
+// 播放结束后自动播放下一首
+function onEnded() {
+    playNext();
+}
+
+// 进度条点击跳转
+function seekTo(event: MouseEvent) {
+    if (!audioRef.value || !duration.value) return;
+
+    const processElement = event.currentTarget as HTMLElement;
+    const rect = processElement.getBoundingClientRect();
+    const clickX = event.clientX - rect.left;
+    const percentage = clickX / rect.width;
+    const seekTime = percentage * duration.value;
+
+    audioRef.value.currentTime = seekTime;
+    updateTime(seekTime);
+}
+
+// 音量控制
+function onVolumeChange(event: Event) {
+    const target = event.target as HTMLInputElement;
+    const newVolume = parseInt(target.value) / 100;
+    setVolume(newVolume);
+}
 
 // 开始自动隐藏计时
 function startAutoHide() {
@@ -85,6 +186,18 @@ function toggleVolume() {
     }
 }
 
+// 下载当前歌曲
+function downloadCurrentSong() {
+    if (!currentSong.value) return;
+
+    const link = document.createElement('a');
+    link.href = currentSong.value.url;
+    link.download = currentSong.value.title;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+}
+
 // 点击文档其他地方时关闭音量控制
 function onDocClick(e: MouseEvent) {
     const target = e.target as Node;
@@ -96,8 +209,22 @@ function onDocClick(e: MouseEvent) {
 }
 
 // 监听页面点击以关闭音量控制
-onMounted(() => document.addEventListener('click', onDocClick));
-onBeforeUnmount(() => document.removeEventListener('click', onDocClick));
+onMounted(() => {
+    document.addEventListener('click', onDocClick);
+    // 初始化音量
+    if (audioRef.value) {
+        audioRef.value.volume = volume.value;
+    }
+});
+onBeforeUnmount(() => {
+    document.removeEventListener('click', onDocClick);
+});
+
+// 导出图片资源供模板使用
+defineExpose({
+    playIcon,
+    pauseIcon
+});
 </script>
 
 <style scoped lang="less">
@@ -128,6 +255,16 @@ onBeforeUnmount(() => document.removeEventListener('click', onDocClick));
             height: 3px;
             background: #e1e1e1;
             border-radius: 2px;
+            cursor: pointer;
+            position: relative;
+
+            .progress-bar {
+                height: 100%;
+                background: #2b2b2b;
+                border-radius: 2px;
+                width: 0%;
+                transition: width 0.1s linear;
+            }
         }
 
         // 控制按钮

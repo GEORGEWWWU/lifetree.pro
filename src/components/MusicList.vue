@@ -25,7 +25,7 @@
                     <td class="col-duration">{{ song.duration }}</td>
                     <td class="col-type">{{ song.type }}</td>
                     <td class="col-action">
-                        <button>播放</button>
+                        <button @click="playSong(song)">播放</button>
                         <div class="more">
                             <img src="../assets/DotsThree.png" alt="更多" @click.stop="toggleMore(song.id)">
                             <div class="moreaction" v-show="activeMoreId === song.id" @click.stop>
@@ -43,10 +43,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue';
+import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
+import { usePlayer, type Song } from '../stores/player';
+
+// 使用播放器状态管理
+const { setPlaylist, playSong } = usePlayer();
 
 // 歌曲列表
-const songs = ref<Array<{ id: number; title: string; duration: string; type: string; url: string }>>([]);
+const songs = ref<Song[]>([]);
 
 // 当前激活的更多操作菜单的歌曲 ID
 const activeMoreId = ref<number | null>(null);
@@ -66,14 +70,14 @@ onMounted(() => document.addEventListener('click', onDocClick));
 onBeforeUnmount(() => document.removeEventListener('click', onDocClick));
 
 // 下载歌曲或相关文件
-function onDownload(song: any, mode: string) {
+function onDownload(song: Song, mode: string) {
     // 占位：实现下载逻辑
     console.log('download', song, mode);
     activeMoreId.value = null;
 }
 
 // 选择格式
-function onSelectFormat(song: any) {
+function onSelectFormat(song: Song) {
     // 占位：实现选择格式逻辑
     console.log('select format', song);
     activeMoreId.value = null;
@@ -125,7 +129,17 @@ onMounted(async () => {
             console.warn('load audio failed', path, e);
         }
     }
+
+    // 设置播放列表
+    setPlaylist(songs.value);
 });
+
+// 监听歌曲列表变化，更新播放列表
+watch(songs, (newSongs) => {
+    if (newSongs.length > 0) {
+        setPlaylist(newSongs);
+    }
+}, { deep: true });
 </script>
 
 <style scoped lang="less">
