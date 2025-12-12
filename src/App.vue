@@ -5,16 +5,11 @@
 
     <!--路由视图-->
     <router-view />
-    
+
     <!--全局消息弹窗组件-->
-    <Notification
-      v-if="currentNotification"
-      :key="currentNotification.id"
-      :message="currentNotification.message"
-      :duration="currentNotification.duration"
-      :auto-close="currentNotification.autoClose"
-      @notification-ended="removeCurrentNotification"
-    />
+    <Notification v-if="currentNotification" :key="currentNotification.id" :message="currentNotification.message"
+      :duration="currentNotification.duration" :auto-close="currentNotification.autoClose"
+      @notification-ended="removeCurrentNotification" />
   </div>
 </template>
 

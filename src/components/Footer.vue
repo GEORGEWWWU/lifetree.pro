@@ -56,4 +56,21 @@
         }
     }
 }
+
+// 移动端适配（响应式）
+@media (max-width: 768px) {
+    .footer_container {
+        width: 100vw !important;
+        padding: 15px 0 !important;
+        border-radius: 0;
+
+        footer {
+            width: 90% !important;
+            display: grid;
+            justify-items: left;
+            align-items: center;
+            gap: 8px;
+        }
+    }
+}
 </style>

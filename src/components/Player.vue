@@ -480,4 +480,50 @@ defineExpose({
         }
     }
 }
+
+// 移动端适配（响应式）
+@media (max-width: 768px) {
+    .player_container {
+        width: 100% !important;
+        background: #fff !important;
+        padding: 8px 0 !important;
+
+        .process {
+            width: 90% !important;
+            height: 5px !important;
+        }
+
+        .player {
+            width: 100% !important;
+            padding: 0px !important;
+
+            .controls {
+                height: auto !important;
+                display: grid !important;
+                justify-content: center !important;
+                grid-template-rows: 1fr 1fr !important;
+                gap: 5px !important;
+                padding: 10px 0 !important;
+
+                .name_time {
+                    min-width: auto !important;
+                    justify-content: center !important;
+                    text-align: center;
+                    order: 1;
+                }
+
+                .music_control {
+                    position: static !important;
+                    transform: none !important;
+                    order: 2;
+                }
+
+                .orther_control {
+                    display: none !important;
+                    visibility: hidden !important;
+                }
+            }
+        }
+    }
+}
 </style>

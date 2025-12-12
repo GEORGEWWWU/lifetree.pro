@@ -25,7 +25,7 @@
                     <td class="col-duration">{{ song.duration }}</td>
                     <td class="col-type">{{ song.type }}</td>
                     <td class="col-action">
-                        <button @click="playSong(song)">播放</button>
+                        <button @click="playSong(song)"><p>播放</p><img src="../assets/暂停中.png"></button>
                         <div class="more">
                             <img src="../assets/DotsThree.png" alt="更多" @click.stop="toggleMore(song.id)">
                             <div class="moreaction" v-show="activeMoreId === song.id" @click.stop>
@@ -45,10 +45,8 @@
 <script setup lang="ts">
 import { ref, onMounted, onBeforeUnmount, watch } from 'vue';
 import { usePlayer, type Song } from '../stores/player';
-
 // 使用播放器状态管理
 const { setPlaylist, playSong } = usePlayer();
-
 // 歌曲列表
 const songs = ref<Song[]>([]);
 
@@ -256,6 +254,13 @@ watch(songs, (newSongs) => {
             display: flex;
             justify-content: center;
             align-items: center;
+
+
+
+            img {
+                width: 20px;
+                display: none;
+            }
         }
 
         .more {
@@ -320,6 +325,107 @@ watch(songs, (newSongs) => {
                         opacity: 1;
                         transform: translateY(25px);
                     }
+                }
+            }
+        }
+    }
+}
+
+// 移动端适配（响应式）
+@media (max-width: 768px) {
+    .musiclist_container {
+        width: 100vw !important;
+        padding: 15px 0 !important;
+        border-radius: 0;
+
+        .music-table {
+            width: 95% !important;
+            padding: 0 !important;
+
+            // 隐藏序号列、时长列和格式列
+            .col-index,
+            .col-duration,
+            .col-type {
+                display: none;
+            }
+
+            tbody tr:hover td {
+                background: none !important;
+            }
+
+            // 调整列宽
+            colgroup {
+                col:nth-child(1) {
+                    display: none;
+                }
+
+                col:nth-child(2) {
+                    width: 75% !important;
+                }
+
+                col:nth-child(3) {
+                    display: none;
+                }
+
+                col:nth-child(4) {
+                    display: none;
+                }
+
+                col:nth-child(5) {
+                    width: 25% !important;
+                }
+            }
+
+            // 隐藏表头中的对应列
+            th.col-index,
+            th.col-duration,
+            th.col-type {
+                display: none;
+            }
+
+            // 隐藏数据行中的对应列
+            td.col-index,
+            td.col-duration,
+            td.col-type {
+                display: none;
+            }
+
+            // 调整操作列样式
+            .col-action {
+                justify-content: center;
+                text-align: center;
+                padding: 15px;
+
+                button {
+                    padding: 0;
+                    margin-right: 13px;
+
+                    p{
+                        display: none;
+                    }
+
+                    img {
+                        display: block;
+                    }
+                }
+
+                .more {
+                    padding: 0;
+                }
+            }
+
+            // 调整行高和内边距
+            tbody tr {
+                td {
+                    padding: 12px 8px;
+                }
+
+                td:first-child {
+                    border-radius: 6px 0 0 6px;
+                }
+
+                td:last-child {
+                    border-radius: 0 6px 6px 0;
                 }
             }
         }

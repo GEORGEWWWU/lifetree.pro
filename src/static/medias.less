@@ -113,3 +113,37 @@
         }
     }
 }
+
+// 移动端适配（响应式）
+@media (max-width: 768px) {
+    .medias_page {
+        padding-top: 95px;
+
+        main {
+            padding-bottom: 20px !important;
+
+            section {
+                width: 95vw;
+
+                .container {
+                    width: 98%;
+                }
+
+                .leadtitle {
+                    h2 {
+                        font-size: 24px !important;
+                    }
+
+                    .leadtext {
+                        font-size: 15px !important;
+                    }
+
+                    .playBtn {
+                        font-size: 14px !important;
+                        padding: 8px 12px !important;
+                    }
+                }
+            }
+        }
+    }
+}

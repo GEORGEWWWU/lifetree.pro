@@ -4,6 +4,7 @@
     justify-items: center;
     padding-top: 55px;
     animation: pagefadein 0.3s ease-in-out;
+    overflow-x: hidden;
 
     // 内容区域
     main {
@@ -12,12 +13,14 @@
         justify-items: center;
         gap: 20px;
         padding-bottom: 100px;
+        overflow-x: hidden;
 
         section {
             width: 100vw;
             display: grid;
             justify-items: center;
             padding: 22px 0;
+            overflow-x: hidden;
 
             .container {
                 max-width: 1000px;
@@ -81,5 +84,53 @@
             opacity: 1;
 
         }
+    }
+}
+
+// 移动端适配（响应式）
+@media (max-width: 768px) {
+    .home_page {
+        padding-top: 55px !important;
+        width: 100% !important;
+        max-width: 100vw !important;
+        overflow-x: hidden !important;
+        position: relative;
+    }
+
+    main {
+        width: 100% !important;
+        padding-bottom: 150px !important;
+
+        section {
+            width: 100% !important;
+            padding: 22px 0px !important;
+
+            .container {
+                width: 95% !important;
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+
+            .leadtitle {
+                h2 {
+                    font-size: 24px !important;
+                }
+
+                .leadtext {
+                    font-size: 15px !important;
+                }
+
+                .playBtn {
+                    font-size: 14px !important;
+                    padding: 8px 12px !important;
+                }
+            }
+        }
+    }
+
+    .player {
+        width: 100% !important;
+        max-width: 100vw !important;
     }
 }

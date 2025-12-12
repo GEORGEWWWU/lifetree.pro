@@ -16,6 +16,13 @@
                 <button>登录</button>
             </div>
         </header>
+        <div class="mobile_header">
+            <div class="m_header_left">
+                <a href="#music" @click="handleMusicClick">曲目</a>
+                <router-link to="/media">视频与画廊</router-link>
+            </div>
+            <button>登录</button>
+        </div>
     </div>
 </template>
 
@@ -136,6 +143,114 @@ function handleMusicClick(e: MouseEvent) {
                 &:active {
                     transform: scale(0.96);
                 }
+            }
+
+            img {
+                width: 28px;
+                height: 28px;
+                display: none;
+            }
+        }
+    }
+
+    // 移动端header
+    .mobile_header {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .header_container {
+        position: fixed !important;
+        background: #fff !important;
+        width: 100vw !important;
+        max-width: 100vw !important;
+        z-index: 99;
+    }
+
+    header {
+        width: 100% !important;
+        max-width: 100vw !important;
+        padding: 0 15px !important;
+        box-sizing: border-box !important;
+        position: relative;
+        z-index: 101;
+
+        .logo {
+            img {
+                width: 36px !important;
+                height: 36px !important;
+            }
+
+            h1 {
+                font-size: 15px !important;
+            }
+
+            p {
+                font-size: 10px !important;
+            }
+        }
+
+        .nav {
+
+            a,
+            button {
+                display: none;
+            }
+        }
+    }
+
+    // 移动端header
+    .mobile_header {
+        width: 100% !important;
+        padding: 4px 0px 8px 0px !important;
+        box-sizing: border-box !important;
+        display: flex !important;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        background: #fff !important;
+        gap: 13px;
+
+        .m_header_left {
+            display: flex;
+            flex-direction: row;
+            justify-content: left;
+            align-items: center;
+            gap: 13px;
+
+            a {
+                font-size: 14px;
+                padding: 4px 8px;
+                border-radius: 6px;
+                transition: all 0.12s ease-in-out;
+                margin-left: 13px;
+
+                &:hover {
+                    background: #f4f4f4;
+                }
+
+                &:active {
+                    transform: scale(0.96);
+                }
+            }
+        }
+
+        button {
+            font-size: 14px;
+            padding: 4px 16px;
+            border-radius: 6px;
+            background: #2b2b2b;
+            color: #fff;
+            margin-right: 13px;
+            transition: all 0.12s ease-in-out;
+
+            &:hover {
+                background: #1e1e1e;
+            }
+
+            &:active {
+                transform: scale(0.96);
             }
         }
     }
